@@ -17,7 +17,7 @@ class QuizBankAndLogicTest {
     fun defaultQuestionBank_hasOver300ValidDistinctQuestionsAcrossAllCategories() {
         val questions = DefaultQuestions.questions
         assertTrue("Expected more than 300 default questions, got ${questions.size}", questions.size > 300)
-        assertEquals(310, questions.size)
+        assertEquals(500, questions.size)
         assertEquals(questions.size, questions.map { it.id }.distinct().size)
         assertEquals(questions.size, questions.map { it.questionText.trim() }.distinct().size)
 
@@ -29,7 +29,7 @@ class QuizBankAndLogicTest {
 
         QuizCategory.selectableCategories.forEach { category ->
             val count = questions.count { it.category == category }
-            assertEquals("Category ${category.displayName} should have 62 questions", 62, count)
+            assertEquals("Category ${category.displayName} should have 100 questions", 100, count)
         }
 
         DifficultyLevel.specificLevels.forEach { level ->

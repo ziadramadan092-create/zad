@@ -73,6 +73,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.model.LifelineState
 import com.example.model.QuizMode
@@ -282,7 +283,10 @@ private fun QuizTopHeader(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier.weight(1f),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 IconButton(
                     onClick = onRequestExit,
                     modifier = Modifier.testTag("exit_quiz_button"),
@@ -292,7 +296,7 @@ private fun QuizTopHeader(
                         contentDescription = "العودة للإعدادات",
                     )
                 }
-                Column {
+                Column(modifier = Modifier.weight(1f)) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -301,9 +305,10 @@ private fun QuizTopHeader(
                             text = if (mode == QuizMode.SURVIVAL) {
                                 "السؤال $currentNumber"
                             } else {
-                                "السؤال $currentNumber من $totalCount"
+                                "السؤال $currentNumber/$totalCount"
                             },
                             style = MaterialTheme.typography.titleMedium,
+                            maxLines = 1,
                         )
                         if (modeBadgeText != null) {
                             Surface(
@@ -314,6 +319,8 @@ private fun QuizTopHeader(
                                     text = modeBadgeText,
                                     style = MaterialTheme.typography.labelMedium,
                                     color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
                                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
                                 )
                             }
@@ -323,17 +330,18 @@ private fun QuizTopHeader(
                         text = if (mode == QuizMode.SURVIVAL) {
                             "سلسلة متواصلة: ${survivalState.currentStreak}"
                         } else {
-                            "نسبة الإنجاز: $progressPercent%"
+                            "الإنجاز: $progressPercent%"
                         },
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
                     )
                 }
             }
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 IconButton(
                     onClick = onToggleSound,
@@ -621,24 +629,35 @@ private fun LifelinePill(
         color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.65f),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary.copy(alpha = 0.55f)),
     ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
+        Column(
+            modifier = Modifier.padding(horizontal = 6.dp, vertical = 8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(2.dp),
         ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.secondary,
-                modifier = Modifier.size(16.dp),
-            )
-            Spacer(modifier = Modifier.width(4.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.secondary,
+                    modifier = Modifier.size(16.dp),
+                )
+                Text(
+                    text = "$countLeft",
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.secondary,
+                )
+            }
             Text(
-                text = "$label ($countLeft)",
+                text = label,
                 style = MaterialTheme.typography.labelSmall,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                 maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }

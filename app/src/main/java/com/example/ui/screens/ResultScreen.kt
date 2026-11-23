@@ -68,6 +68,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.model.AnsweredRecord
 import com.example.model.PerformanceBreakdown
@@ -628,15 +629,17 @@ private fun ResultActionsCard(
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
-                    text = if (mode == QuizMode.DAILY) "مراجعة أسئلة اليوم" else "إعادة الجولة",
+                    text = if (mode == QuizMode.DAILY) "مراجعة اليوم" else "إعادة الجولة",
                     style = MaterialTheme.typography.labelLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
 
             OutlinedButton(
                 onClick = onChooseNewCategory,
                 shape = RoundedCornerShape(16.dp),
-                contentPadding = PaddingValues(vertical = 14.dp),
+                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 14.dp),
                 modifier = Modifier
                     .weight(1f)
                     .height(52.dp)
@@ -649,8 +652,10 @@ private fun ResultActionsCard(
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
-                    text = "الشاشة الرئيسية",
+                    text = "الرئيسية",
                     style = MaterialTheme.typography.labelLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         }
@@ -672,6 +677,7 @@ private fun ResultActionsCard(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ReviewSectionHeader(
     wrongCount: Int,
@@ -684,11 +690,14 @@ private fun ReviewSectionHeader(
             text = "مراجعة الأسئلة والشروحات",
             style = MaterialTheme.typography.titleLarge,
         )
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
             FilterChip(
                 selected = showOnlyWrong,
                 onClick = { onToggleFilter(true) },
-                label = { Text("الأسئلة الخاطئة فقط ($wrongCount)") },
+                label = { Text("الأسئلة الخاطئة ($wrongCount)") },
                 modifier = Modifier.testTag("review_filter_wrong"),
             )
             FilterChip(

@@ -8,8 +8,8 @@ import com.example.data.questions.SeerahQuestions
 import com.example.model.QuizQuestion
 
 /**
- * بنك الأسئلة الافتراضي لتطبيق "زاد المعرفة" — 310 أسئلة موثقة وموزعة بالتساوي
- * على الأقسام الخمسة (62 سؤالاً لكل قسم) ومستويات الصعوبة الثلاثة.
+ * بنك الأسئلة الافتراضي لتطبيق "زاد المعرفة" — 500 سؤال موثق وموزع بالتساوي
+ * على الأقسام الخمسة (100 سؤال لكل قسم) ومستويات الصعوبة الثلاثة.
  */
 object DefaultQuestions {
     val questions: List<QuizQuestion> = buildList {
