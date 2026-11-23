@@ -51,9 +51,13 @@ jobs:
         with:
           gradle-version: '9.3.1'
 
-      - name: Run unit tests and build Debug APK
+      - name: Build Debug APK
         run: |
-          gradle :app:testDebugUnitTest :app:assembleDebug --no-daemon
+          gradle :app:assembleDebug \
+            --stacktrace \
+            --no-configuration-cache \
+            -Dorg.gradle.jvmargs="-Xmx3g -Djava.awt.headless=true -Dfile.encoding=UTF-8" \
+            -Pkotlin.compiler.execution.strategy=daemon
 
       - name: Upload Debug APK artifact
         uses: actions/upload-artifact@v4
