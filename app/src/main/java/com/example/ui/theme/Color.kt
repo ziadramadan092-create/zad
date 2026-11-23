@@ -1,0 +1,58 @@
+package com.example.ui.theme
+
+import androidx.compose.ui.graphics.Color
+
+// Light Theme Palette — Warm Scholarly Ivory & Deep Emerald
+val LightBackground = Color(0xFFFAF6EE)
+val LightSurface = Color(0xFFFFFFFF)
+val LightSurfaceVariant = Color(0xFFF2EADF)
+val LightPrimary = Color(0xFF0D5C4B)
+val LightOnPrimary = Color(0xFFFFFFFF)
+val LightPrimaryContainer = Color(0xFFD2EFE6)
+val LightOnPrimaryContainer = Color(0xFF06382D)
+val LightSecondary = Color(0xFFB57F1E)
+val LightOnSecondary = Color(0xFFFFFFFF)
+val LightSecondaryContainer = Color(0xFFF8E9C6)
+val LightOnSecondaryContainer = Color(0xFF4A3104)
+val LightTertiary = Color(0xFF285E6B)
+val LightOnBackground = Color(0xFF1A211E)
+val LightOnSurface = Color(0xFF1A211E)
+val LightOnSurfaceVariant = Color(0xFF53605B)
+val LightOutline = Color(0xFFD6CEC0)
+
+// Dark Theme Palette — Serene Night Emerald & Antique Gold
+val DarkBackground = Color(0xFF0B1714)
+val DarkSurface = Color(0xFF13241F)
+val DarkSurfaceVariant = Color(0xFF1C322B)
+val DarkPrimary = Color(0xFF4EC5A5)
+val DarkOnPrimary = Color(0xFF042B22)
+val DarkPrimaryContainer = Color(0xFF13483B)
+val DarkOnPrimaryContainer = Color(0xFFCFF6E9)
+val DarkSecondary = Color(0xFFE5BA5E)
+val DarkOnSecondary = Color(0xFF332100)
+val DarkSecondaryContainer = Color(0xFF4B370E)
+val DarkOnSecondaryContainer = Color(0xFFFAE4B0)
+val DarkTertiary = Color(0xFF7BC4D4)
+val DarkOnBackground = Color(0xFFEBEFE9)
+val DarkOnSurface = Color(0xFFEBEFE9)
+val DarkOnSurfaceVariant = Color(0xFFA6B8B1)
+val DarkOutline = Color(0xFF2B463D)
+
+// Semantic Quiz Feedback Tokens
+val LightCorrect = Color(0xFF177A46)
+val LightCorrectContainer = Color(0xFFE5F6EC)
+val LightOnCorrectContainer = Color(0xFF0B4626)
+val LightWrong = Color(0xFFC0392B)
+val LightWrongContainer = Color(0xFFFCEAE8)
+val LightOnWrongContainer = Color(0xFF6B1B13)
+val LightGoldSurface = Color(0xFFFFF8E8)
+val LightGoldBorder = Color(0xFFE2BE6B)
+
+val DarkCorrect = Color(0xFF5CE094)
+val DarkCorrectContainer = Color(0xFF103F25)
+val DarkOnCorrectContainer = Color(0xFFC8F7DC)
+val DarkWrong = Color(0xFFF2786D)
+val DarkWrongContainer = Color(0xFF4D1A15)
+val DarkOnWrongContainer = Color(0xFFFFDAD6)
+val DarkGoldSurface = Color(0xFF261E0D)
+val DarkGoldBorder = Color(0xFF9C7B32)

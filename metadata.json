@@ -1,0 +1,6 @@
+{
+  "name": "زاد المعرفة",
+  "description": "تطبيق اختبارات إسلامية تفاعلي يعمل دون اتصال بالإنترنت مع بنك أسئلة متنوع وشروحات فورية وإحصائيات محفوظة محلياً.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

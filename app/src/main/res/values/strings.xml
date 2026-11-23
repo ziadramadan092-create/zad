@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">زاد المعرفة</string>
+    <string name="developer_credit">المطور Eng-Ziad Ramadan</string>
+    <string name="developer_name">Eng-Ziad Ramadan</string>
+    <string name="developer_email">ziadramadan092@gmail.com</string>
+    <string name="reminder_channel_name">تذكير الأسئلة اليومية</string>
+    <string name="reminder_channel_desc">إشعار يومي لتذكيرك بحل أسئلة اليوم في زاد المعرفة</string>
+    <string name="reminder_notification_title">زاد المعرفة • أسئلة اليوم بانتظارك</string>
+    <string name="reminder_notification_body">جدّد زادك المعرفي الآن وأجب عن 5 أسئلة إسلامية جديدة وحافظ على سلسلتك اليومية.</string>
+</resources>

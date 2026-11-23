@@ -1,0 +1,131 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Reusable primitives
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidUserProgress(data) {
+      return data.userId is string && data.userId.size() >= 1 && data.userId.size() <= 128 &&
+             data.userId == request.auth.uid &&
+             data.displayName is string && data.displayName.size() >= 1 && data.displayName.size() <= 80 &&
+             data.totalXp is int && data.totalXp >= 0 && data.totalXp <= 10000000 &&
+             data.level is int && data.level >= 1 && data.level <= 10 &&
+             data.totalAnswered is int && data.totalAnswered >= 0 && data.totalAnswered <= 1000000 &&
+             data.totalCorrect is int && data.totalCorrect >= 0 && data.totalCorrect <= 1000000 &&
+             data.completedQuizzes is int && data.completedQuizzes >= 0 && data.completedQuizzes <= 1000000 &&
+             data.highestScorePercent is int && data.highestScorePercent >= 0 && data.highestScorePercent <= 100 &&
+             data.bestSurvivalStreak is int && data.bestSurvivalStreak >= 0 && data.bestSurvivalStreak <= 100000 &&
+             data.dailyStreak is int && data.dailyStreak >= 0 && data.dailyStreak <= 100000 &&
+             data.unlockedBadgeIds is list && data.unlockedBadgeIds.size() <= 20 &&
+             (data.unlockedBadgeIds.size() == 0 || data.unlockedBadgeIds[0] is string) &&
+             data.updatedAt is timestamp && data.updatedAt <= request.time;
+    }
+
+    function isValidLeaderboardEntry(data) {
+      return data.userId is string && data.userId.size() >= 1 && data.userId.size() <= 128 &&
+             data.userId == request.auth.uid &&
+             data.displayName is string && data.displayName.size() >= 1 && data.displayName.size() <= 80 &&
+             data.totalXp is int && data.totalXp >= 0 && data.totalXp <= 10000000 &&
+             data.level is int && data.level >= 1 && data.level <= 10 &&
+             data.levelTitle is string && data.levelTitle.size() >= 1 && data.levelTitle.size() <= 60 &&
+             data.bestSurvivalStreak is int && data.bestSurvivalStreak >= 0 && data.bestSurvivalStreak <= 100000 &&
+             data.unlockedBadgesCount is int && data.unlockedBadgesCount >= 0 && data.unlockedBadgesCount <= 20 &&
+             data.updatedAt is timestamp && data.updatedAt <= request.time;
+    }
+
+    match /users/{userId} {
+      allow get: if isOwner(userId) && isValidId(userId);
+      allow list: if false;
+
+      allow create: if isOwner(userId) &&
+                       isValidId(userId) &&
+                       incoming().keys().hasAll([
+                         'userId', 'displayName', 'totalXp', 'level',
+                         'totalAnswered', 'totalCorrect', 'completedQuizzes',
+                         'highestScorePercent', 'bestSurvivalStreak', 'dailyStreak',
+                         'unlockedBadgeIds', 'createdAt', 'updatedAt'
+                       ]) &&
+                       incoming().keys().hasOnly([
+                         'userId', 'displayName', 'totalXp', 'level',
+                         'totalAnswered', 'totalCorrect', 'completedQuizzes',
+                         'highestScorePercent', 'bestSurvivalStreak', 'dailyStreak',
+                         'unlockedBadgeIds', 'createdAt', 'updatedAt'
+                       ]) &&
+                       incoming().createdAt is timestamp &&
+                       incoming().createdAt <= request.time &&
+                       isValidUserProgress(incoming());
+
+      allow update: if isOwner(userId) &&
+                       isValidId(userId) &&
+                       isValidUserProgress(incoming()) &&
+                       incoming().userId == existing().userId &&
+                       incoming().createdAt == existing().createdAt &&
+                       incoming().diff(existing()).affectedKeys().hasOnly([
+                         'displayName', 'totalXp', 'level',
+                         'totalAnswered', 'totalCorrect', 'completedQuizzes',
+                         'highestScorePercent', 'bestSurvivalStreak', 'dailyStreak',
+                         'unlockedBadgeIds', 'updatedAt'
+                       ]);
+
+      allow delete: if isOwner(userId) && isValidId(userId);
+    }
+
+    match /leaderboard/{userId} {
+      allow get: if isSignedIn() && isValidId(userId);
+      allow list: if isSignedIn() && resource.data.totalXp >= 0;
+
+      allow create: if isOwner(userId) &&
+                       isValidId(userId) &&
+                       incoming().keys().hasAll([
+                         'userId', 'displayName', 'totalXp', 'level',
+                         'levelTitle', 'bestSurvivalStreak', 'unlockedBadgesCount',
+                         'createdAt', 'updatedAt'
+                       ]) &&
+                       incoming().keys().hasOnly([
+                         'userId', 'displayName', 'totalXp', 'level',
+                         'levelTitle', 'bestSurvivalStreak', 'unlockedBadgesCount',
+                         'createdAt', 'updatedAt'
+                       ]) &&
+                       incoming().createdAt is timestamp &&
+                       incoming().createdAt <= request.time &&
+                       isValidLeaderboardEntry(incoming());
+
+      allow update: if isOwner(userId) &&
+                       isValidId(userId) &&
+                       isValidLeaderboardEntry(incoming()) &&
+                       incoming().userId == existing().userId &&
+                       incoming().createdAt == existing().createdAt &&
+                       incoming().diff(existing()).affectedKeys().hasOnly([
+                         'displayName', 'totalXp', 'level',
+                         'levelTitle', 'bestSurvivalStreak', 'unlockedBadgesCount',
+                         'updatedAt'
+                       ]);
+
+      allow delete: if isOwner(userId) && isValidId(userId);
+    }
+  }
+}

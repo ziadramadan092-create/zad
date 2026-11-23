@@ -1,0 +1,150 @@
+{
+  "entities": {
+    "CloudUserProgress": {
+      "title": "CloudUserProgress",
+      "description": "Authenticated user's synced Islamic quiz progress, XP, level, streaks, and unlocked badges.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the owner."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Display name shown in the user profile."
+        },
+        "totalXp": {
+          "type": "integer",
+          "description": "Total accumulated experience points."
+        },
+        "level": {
+          "type": "integer",
+          "description": "Current scholarly level (1-10)."
+        },
+        "totalAnswered": {
+          "type": "integer",
+          "description": "Total questions answered in standard/survival modes."
+        },
+        "totalCorrect": {
+          "type": "integer",
+          "description": "Total correctly answered questions."
+        },
+        "completedQuizzes": {
+          "type": "integer",
+          "description": "Total completed quiz rounds."
+        },
+        "highestScorePercent": {
+          "type": "integer",
+          "description": "Highest percentage score achieved (0-100)."
+        },
+        "bestSurvivalStreak": {
+          "type": "integer",
+          "description": "Best consecutive correct streak in Survival mode."
+        },
+        "dailyStreak": {
+          "type": "integer",
+          "description": "Current daily challenge streak in days."
+        },
+        "unlockedBadgeIds": {
+          "type": "array",
+          "description": "List of unlocked badge identifier strings."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when created (FieldValue.serverTimestamp())."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when last updated (FieldValue.serverTimestamp())."
+        }
+      },
+      "required": [
+        "userId",
+        "displayName",
+        "totalXp",
+        "level",
+        "totalAnswered",
+        "totalCorrect",
+        "completedQuizzes",
+        "highestScorePercent",
+        "bestSurvivalStreak",
+        "dailyStreak",
+        "unlockedBadgeIds",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "LeaderboardEntry": {
+      "title": "LeaderboardEntry",
+      "description": "Publicly readable non-PII scoreboard entry for the authenticated leaderboard.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the player."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Public display name on the leaderboard."
+        },
+        "totalXp": {
+          "type": "integer",
+          "description": "Total accumulated XP used for ranking."
+        },
+        "level": {
+          "type": "integer",
+          "description": "Current scholarly level (1-10)."
+        },
+        "levelTitle": {
+          "type": "string",
+          "description": "Arabic scholarly title for the level."
+        },
+        "bestSurvivalStreak": {
+          "type": "integer",
+          "description": "Best streak in Survival mode."
+        },
+        "unlockedBadgesCount": {
+          "type": "integer",
+          "description": "Number of unlocked badges."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when created (FieldValue.serverTimestamp())."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when last updated (FieldValue.serverTimestamp())."
+        }
+      },
+      "required": [
+        "userId",
+        "displayName",
+        "totalXp",
+        "level",
+        "levelTitle",
+        "bestSurvivalStreak",
+        "unlockedBadgesCount",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/CloudUserProgress"
+      },
+      "description": "Owner-isolated synced progress document for each user."
+    },
+    "/leaderboard/{userId}": {
+      "schema": {
+        "$ref": "#/entities/LeaderboardEntry"
+      },
+      "description": "Non-PII global leaderboard entries writable only by their owner and readable by signed-in users."
+    }
+  }
+}
